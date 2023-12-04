@@ -1,6 +1,6 @@
 package org.example;
 
-public class Data {
+public class Data { // хранилище данных
     private double[] alpha = {0.7, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79,
             0.8, 0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88, 0.89,
             0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1};
@@ -18,4 +18,20 @@ public class Data {
     private double[] betta = {185.7, 185.7, 185.6, 185.3, 185.1, 185, 184.8, 184.5, 184.3,
                             184, 183.7, 183.5, 183.2, 182.9, 182.6, 182.2, 181.9, 181.6, 181.3,
                             180.9, 180.7, 180.3, 180, 179.7, 179.4, 179, 178.7, 178.4, 178.1, 177.8};
+
+    public double[] getAlpha(){
+        return alpha;
+    }
+    public double[] getTempеrature(){
+        return tempеrature;
+    }
+    public double[] getK(){
+        return k;
+    }
+    public double[] getR(){
+        return r;
+    }
+    public double[] getBetta(){
+        return betta;
+    }
 }
