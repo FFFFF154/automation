@@ -31,7 +31,7 @@ public class Data { // хранилище данных
     public double[] getR(){
         return r;
     }
-    public double[] getBetta(){
+    public double[] getBetta(){// Не нужно!
         return betta;
     }
 }
