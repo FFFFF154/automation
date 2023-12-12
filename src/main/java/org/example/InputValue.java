@@ -3,6 +3,7 @@ package org.example;
 import java.util.Scanner;
 
 public class InputValue {
+
     private Double pk;
     private static final Scanner SCANNER = new Scanner(System.in);
     public double inputPressure() throws PressureException { // Ввод давления

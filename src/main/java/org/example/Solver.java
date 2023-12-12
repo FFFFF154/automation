@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.Scanner;
-
-public class Solver {
+public class Solver implements Runnable{
     private Data data;
     static InputValue inputValue = new InputValue();
 
@@ -19,7 +17,6 @@ public class Solver {
         double[] value = new double[4];
         for (int j = 0; j < 4; j++) {
             value[j] = Math.sqrt(data.getParamsR()[i][j] * data.getParamsTemperature()[i][j]) / (Math.sqrt(data.getParamsK()[i][j]) * Math.pow(2 / (data.getParamsK()[i][j] + 1), (data.getParamsK()[i][j] + 1) / (2 * (data.getParamsK()[i][j] - 1))));
-            //System.out.println(value[j]);
         }
         data.setParamsBetta(value, i);
         return value;
@@ -30,7 +27,6 @@ public class Solver {
         for (int j = 0; j < 4; j++) {
             value[j] = (Math.sqrt(Math.pow(PA / data.getPk()[i], (2 / data.getParamsK()[i][j])) - Math.pow(PA / data.getPk()[i], ((data.getParamsK()[i][j] + 1) / data.getParamsK()[i][j])))) /
                     (Math.pow((2 / data.getParamsK()[i][j]) + 1, 1 / (data.getParamsK()[i][j] - 1)) * Math.sqrt((data.getParamsK()[i][j] - 1) / (data.getParamsK()[i][j] + 1)));
-            //System.out.println(value[j]);
         }
         return value;
     }
@@ -45,19 +41,11 @@ public class Solver {
 
     public double[] impulse(int k) { // Расчет удельного пустотного импульса
         double[] imp = new double[4];
-        //int k = 0;
         for (int i = 0; i < 4; i++) {
             betta(i);
             imp[i] = w(k)[i] + ((PA / data.getPk()[k]) * betta(k)[i]) * q(k)[i];
-            //System.out.println(imp[i]);
-            //System.out.print("[" + i + "] = " + imp[i] + " ");
-
-            //System.out.println(data.getParamsI()[k][i]);
-            //k++;
         }
         data.setParamsI(imp, k);
-
-        //System.out.println(data.getParamsI()[0][0]);
         return imp;
     }
 
@@ -98,5 +86,11 @@ public class Solver {
         double value = (P - (m * w(count1)[count2])) / (PA * 1_000_000);
 
         return Math.sqrt(4 * value / Math.PI);
+    }
+
+    public void run(){
+        for (int i=0; i<5; i++){
+            impulse(i);
+        }
     }
 }
