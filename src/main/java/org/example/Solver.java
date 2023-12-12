@@ -4,15 +4,16 @@ import java.util.Scanner;
 
 public class Solver {
     private Data data;
+    static InputValue inputValue = new InputValue();
 
-    public Solver(Data data){
+    public Solver(Data data) {
         this.data = data;
     }
 
 
-    private static final double P = 4000000.0;
+    private static final double P = 4_000_000.0;
 
-    private static final double PA = 0.06 ;
+    private static final double PA = 0.06;
 
     public double[] betta(int i) { // Подсчет бетты
         double[] value = new double[4];
@@ -28,13 +29,13 @@ public class Solver {
         double[] value = new double[4];
         for (int j = 0; j < 4; j++) {
             value[j] = (Math.sqrt(Math.pow(PA / data.getPk()[i], (2 / data.getParamsK()[i][j])) - Math.pow(PA / data.getPk()[i], ((data.getParamsK()[i][j] + 1) / data.getParamsK()[i][j])))) /
-                        (Math.pow((2 / data.getParamsK()[i][j]) + 1, 1 / (data.getParamsK()[i][j] - 1)) * Math.sqrt((data.getParamsK()[i][j] - 1) / (data.getParamsK()[i][j] + 1)));
+                    (Math.pow((2 / data.getParamsK()[i][j]) + 1, 1 / (data.getParamsK()[i][j] - 1)) * Math.sqrt((data.getParamsK()[i][j] - 1) / (data.getParamsK()[i][j] + 1)));
             //System.out.println(value[j]);
         }
         return value;
     }
 
-    public double[] w(int i){ // подсчет скорости
+    public double[] w(int i) { // подсчет скорости
         double[] value = new double[4];
         for (int j = 0; j < 4; j++) {
             value[j] = Math.sqrt((2.0 * data.getParamsK()[i][j]) / (data.getParamsK()[i][j] - 1) * data.getParamsR()[i][j] * data.getParamsTemperature()[i][j] * (1 - Math.pow(PA / data.getPk()[i], (data.getParamsK()[i][j] - 1) / data.getParamsK()[i][j])));
@@ -42,7 +43,7 @@ public class Solver {
         return value;
     }
 
-    public double[] impulse(int k){ // Расчет удельного пустотного импульса
+    public double[] impulse(int k) { // Расчет удельного пустотного импульса
         double[] imp = new double[4];
         //int k = 0;
         for (int i = 0; i < 4; i++) {
@@ -60,5 +61,42 @@ public class Solver {
         return imp;
     }
 
+    public double optConsumption(double I) {
+        return P / I;
+    }
 
+    public double diamKp(double m, double alpha) throws PressureException {
+        int count1 = 0;
+        int count2 = 0;
+        for (int k = 0; k < 5; k++) {
+            if ((int) inputValue.inputPressure() == data.getPk()[k]) {
+                count1 = k;
+            }
+        }
+        for (int k = 0; k < 5; k++) {
+            if ((Math.round(alpha * 10) -0.01) / 10.0 == data.getAlpha()[k]) {
+                count2 = k;
+            }
+        }
+        double value = m * data.getParamsBetta()[count1][count2] / (inputValue.inputPressure() * 1_000_000);
+        return Math.sqrt(4 * value / Math.PI);
+    }
+
+    public double diamA(double m, double alpha) throws PressureException{
+        int count1 = 0;
+        int count2 = 0;
+        for (int k = 0; k < 5; k++) {
+            if ((int) inputValue.inputPressure() == data.getPk()[k]) {
+                count1 = k;
+            }
+        }
+        for (int k = 0; k < 5; k++) {
+            if ((Math.round(alpha * 10)-0.01 )/ 10.0 == data.getAlpha()[k]) {
+                count2 = k;
+            }
+        }
+        double value = (P - (m * w(count1)[count2])) / (PA * 1_000_000);
+
+        return Math.sqrt(4 * value / Math.PI);
+    }
 }

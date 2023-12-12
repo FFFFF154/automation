@@ -20,11 +20,7 @@ public class Data { // хранилище данных
         paramsBetta[i] = betta;
     }
     public void setParamsI(double[] iud, int i){
-
         paramsI[i] = iud;
-//        for (int k=0; k<4; k++){
-//            System.out.println(iud[k]);
-//        }
     }
     public double[][] getParamsI(){
         return paramsI;
